@@ -16,7 +16,9 @@ function App() {
       <div className="content">
         <div className="container">
           <div className="content__top">
-            <Categories items={["Мясные", "Вегетерианская", "Гриль", "Острые", "Закрытые",]}/>
+            <Categories kickAss={(categoryName) => console.log(categoryName)} 
+            items={["Мясные", "Вегетерианская", "Гриль", "Острые", "Закрытые"]}
+            />
             <div className="sort">
               <div className="sort__label">
                 <svg
