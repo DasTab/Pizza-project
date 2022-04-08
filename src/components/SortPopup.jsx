@@ -35,7 +35,7 @@ function SortPopup({ items }) {
   // useEffect вызывается при первом рендере []
   React.useEffect(() => {
     document.body.addEventListener("click", handleOutsideClick);
-    console.log(sortRef.current);
+    // console.log(sortRef.current);
   }, []);
 
   // JSX разметка;
