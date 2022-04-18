@@ -10,7 +10,7 @@ function SortPopup({ items }) {
   // useRef для получения актуальных значений
   const sortRef = React.useRef();
   // activeLabel мы из items вытаскиваем активное значение категории
-  const activeLabel = items[activeItem];
+  const activeLabel = items[activeItem].name; // вытаскиваем св-во name
 
 
   const toggleVisiblePopup = () => {
@@ -21,7 +21,7 @@ function SortPopup({ items }) {
   const handleOutsideClick = (e) => {
     if (!e.path.includes(sortRef.current)) {
       setVisiblePopup(false);
-      console.log("Clicked");
+      // console.log("Clicked");
     }
   };
 
@@ -63,13 +63,13 @@ function SortPopup({ items }) {
           <div className="sort__popup">
             <ul>
               {items &&
-                items.map((categoryName, index) => (
+                items.map((obj, index) => (
                   <li
                     className={activeItem === index ? "active" : ""}
                     onClick={() => onSelectItem(index)}
-                    key={`${categoryName}_${index}`}
+                    key={`${obj.type}_${index}`}
                   >
-                    {categoryName}
+                    {obj.name}
                   </li>
                 ))}
             </ul>
