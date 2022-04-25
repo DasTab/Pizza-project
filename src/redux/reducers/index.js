@@ -4,7 +4,7 @@ import filterReducer from "./filters";
 import pizzaReducer from "./pizzas";
 
 const rootReducer = combineReducers({
-  filter: filterReducer, // название filterReducer меняем на filter (ключ-значение)
+  filters: filterReducer, // название filterReducer меняем на filter (ключ-значение)
   pizzas: pizzaReducer,
 });
 
