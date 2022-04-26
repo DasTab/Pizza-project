@@ -10,6 +10,12 @@ import { setPizzas } from "./redux/actions/pizzas";
 function App() {
   const dispatch = useDispatch();
 
+  window.test = () => {
+    axios.get('http://localhost:3000/db.json').then(({ data }) => {
+      dispatch(setPizzas(data.pizzas));
+    });
+  }
+
   // Чтобы при каждом рендере <Home /> не было постоянного
   // запроса на получ.пицц, мы остав.useDispatch в App.js
   React.useEffect(() => {

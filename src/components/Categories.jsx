@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 
-function Categories({ items, kickAss }) {
+  // при вызове MEMO в Categories, ререндер не производится
+  // т.к делает лишь поверхностное сравнение (Н: сравнивает ссылку, но не сравнивает пропсы) 
+const Categories = React.memo(function Categories({ items, showMeCategory }) {
   const [activeItem, setActiveItem] = React.useState(null);
 
   const onSelectItem = (index) => {
     setActiveItem(index);
+    showMeCategory(index);
   };
 
   return (
@@ -29,7 +32,7 @@ function Categories({ items, kickAss }) {
       </ul>
     </div>
   );
-}
+});
 
 export default Categories;
 

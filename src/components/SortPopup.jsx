@@ -1,17 +1,17 @@
 import React from "react";
 
-function SortPopup({ items }) {
-
-// useState для popup
+  // при вызове MEMO в Categories, ререндер не производится
+  // т.к делает лишь поверхностное сравнение (Н: сравнивает ссылку, но не сравнивает пропсы) 
+const SortPopup = React.memo(function SortPopup({ items }) {
+  // useState для popup
   const [visiblePopup, setVisiblePopup] = React.useState(false);
-// useState для активного класса в popup
+  // useState для активного класса в popup
   const [activeItem, setActiveItem] = React.useState(0);
 
   // useRef для получения актуальных значений
   const sortRef = React.useRef();
   // activeLabel мы из items вытаскиваем активное значение категории
   const activeLabel = items[activeItem].name; // вытаскиваем св-во name
-
 
   const toggleVisiblePopup = () => {
     setVisiblePopup(!visiblePopup);
@@ -28,9 +28,9 @@ function SortPopup({ items }) {
   // Ф-ция для выделения цветом, активной категории сортировки (при клике)
   const onSelectItem = (index) => {
     setActiveItem(index);
-  // Мы говороим браузеру, когда какой то из item стал активным то после закрываем pop-up 
+    // Мы говороим браузеру, когда какой то из item стал активным то после закрываем pop-up
     setVisiblePopup(false);
-  }
+  };
 
   // useEffect вызывается при первом рендере []
   React.useEffect(() => {
@@ -44,7 +44,7 @@ function SortPopup({ items }) {
       <div ref={sortRef} className="sort">
         <div className="sort__label">
           <svg
-          className={visiblePopup ? 'rotated' : ''}
+            className={visiblePopup ? "rotated" : ""}
             width="10"
             height="6"
             viewBox="0 0 10 6"
@@ -78,7 +78,7 @@ function SortPopup({ items }) {
       </div>
     </div>
   );
-}
+});
 
 export default SortPopup;
 

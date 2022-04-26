@@ -1,35 +1,44 @@
 import React from "react";
 import { Categories, SortPopup, PizzaBlock } from "../components";
-import { useSelector } from "react-redux";
+import { setCategory } from "../redux/actions/filters";
+import { useDispatch, useSelector } from "react-redux";
+
+const availableCategories = [
+  "Мясные",
+  "Вегетерианская",
+  "Гриль",
+  "Острые",
+  "Сладкие",
+  "Закрытые",
+];
+
+const availableSorting = [
+  // вместо массива строк, передаем массив объектов
+  { name: "популярности", type: "popular" },
+  { name: "цене", type: "price" },
+  { name: "алфавиту", type: "alphabet" },
+];
 
 function Home() {
-  const { items } = useSelector(({ pizzas }) => {
-    return {
-      items: pizzas.items,
-    };
-  });
+  const dispatch = useDispatch();
+  const items = useSelector(({ pizzas }) => pizzas.items);
+
+  // Используем useCallback чтобы ссылка не менялась, 
+  // благодаря этому ф-ция создается только один раз, 
+  // взаимодействует с MEMO в Categories и SortPopup
+  const onSelectCategory = React.useCallback((index) => {
+    dispatch(setCategory(index));
+  }, []);
 
   return (
     <div className="container">
       <div className="content__top">
         <Categories
-          kickAss={(categoryName) => console.log(categoryName)}
-          items={[
-            "Мясные",
-            "Вегетерианская",
-            "Гриль",
-            "Острые",
-            "Сладкие",
-            "Закрытые",
-          ]}
+          showMeCategory={onSelectCategory}
+          items={availableCategories}
         />
         <SortPopup
-          items={[
-            // вместо массива строк, передаем массив объектов
-            { name: "популярности", type: "popular" },
-            { name: "цене", type: "price" },
-            { name: "алфавиту", type: "alphabet" },
-          ]}
+          items={availableSorting}
         />
       </div>
       <h2 className="content__title">Все пиццы</h2>
