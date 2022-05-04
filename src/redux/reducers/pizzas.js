@@ -1,18 +1,28 @@
 const initialState = {
-    items: [],
-    isLoaded: false,
-  };
-  
-  const pizzas = (state = initialState, action) => { // reducer получает 2 параметра
-    if (action.type === "SET_PIZZAS") {
+  items: [],
+  isLoaded: false,
+};
+
+const pizzas = (state = initialState, action) => {
+  // reducer получает 2 параметра
+
+  switch (action.type) {
+    case "SET_PIZZAS":
       return {
         ...state,
         items: action.payload,
         isLoaded: true,
       };
-    }
-    return state; 
-  };
-  
-  export default pizzas;
-  
+
+    case "SET_LOADED":
+      return {
+        ...state,
+        isLoaded: action.payload,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export default pizzas;
