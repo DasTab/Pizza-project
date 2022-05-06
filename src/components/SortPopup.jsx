@@ -1,17 +1,21 @@
 import React from "react";
+import PropTypes from "prop-types";
 
-  // при вызове MEMO в Categories, ререндер не производится
-  // т.к делает лишь поверхностное сравнение (Н: сравнивает ссылку, но не сравнивает пропсы) 
-const SortPopup = React.memo(function SortPopup({ items }) {
+// при вызове MEMO в Categories, ререндер не производится
+// т.к делает лишь поверхностное сравнение (Н: сравнивает ссылку, но не сравнивает пропсы)
+const SortPopup = React.memo(function SortPopup({
+  items,
+  activeSortType,
+  onClickSortType,
+}) {
   // useState для popup
   const [visiblePopup, setVisiblePopup] = React.useState(false);
-  // useState для активного класса в popup
-  const [activeItem, setActiveItem] = React.useState(0);
+  // Удаляем useState для активного класса в popup, const [activeItem, setActiveItem] = React.useState(0);
 
   // useRef для получения актуальных значений
   const sortRef = React.useRef();
   // activeLabel мы из items вытаскиваем активное значение категории
-  const activeLabel = items[activeItem].name; // вытаскиваем св-во name
+  const activeLabel = items.find((obj) => obj.type === activeSortType).name; // вытаскиваем св-во name
 
   const toggleVisiblePopup = () => {
     setVisiblePopup(!visiblePopup);
@@ -27,7 +31,9 @@ const SortPopup = React.memo(function SortPopup({ items }) {
 
   // Ф-ция для выделения цветом, активной категории сортировки (при клике)
   const onSelectItem = (index) => {
-    setActiveItem(index);
+    if (onClickSortType) {
+      onClickSortType(index);
+    }
     // Мы говороим браузеру, когда какой то из item стал активным то после закрываем pop-up
     setVisiblePopup(false);
   };
@@ -65,8 +71,8 @@ const SortPopup = React.memo(function SortPopup({ items }) {
               {items &&
                 items.map((obj, index) => (
                   <li
-                    className={activeItem === index ? "active" : ""}
-                    onClick={() => onSelectItem(index)}
+                    onClick={() => onSelectItem(obj.type)}
+                    className={activeSortType === obj.type ? "active" : ""}
                     key={`${obj.type}_${index}`}
                   >
                     {obj.name}
@@ -79,6 +85,16 @@ const SortPopup = React.memo(function SortPopup({ items }) {
     </div>
   );
 });
+
+SortPopup.propTypes = {
+  activeSortType: PropTypes.string.isRequired,
+  items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onClickSortType: PropTypes.func.isRequired,
+};
+
+SortPopup.defaultProps = {
+  items: [],
+};
 
 export default SortPopup;
 

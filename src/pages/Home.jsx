@@ -1,6 +1,6 @@
 import React from "react";
 import { Categories, SortPopup, PizzaBlock, LoadingBlock } from "../components";
-import { setCategory } from "../redux/actions/filters";
+import { setCategory, setSortBy } from "../redux/actions/filters";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPizzas } from "../redux/actions/pizzas";
 
@@ -28,7 +28,7 @@ function Home() {
 
   React.useEffect(() => {
     dispatch(fetchPizzas());
-  }, []);
+  }, [category, sortBy]);
 
   // Используем useCallback чтобы ссылка не менялась,
   // благодаря этому ф-ция создается только один раз,
@@ -37,14 +37,20 @@ function Home() {
     dispatch(setCategory(index));
   }, []);
 
+  const onSelectSortType = React.useCallback((type) => {
+    dispatch(setSortBy(type));
+  }, []);
+  
+
   return (
     <div className="container">
       <div className="content__top">
         <Categories
+          activeCategoryIndex={category}
           showMeCategory={onSelectCategory}
           items={availableCategories}
         />
-        <SortPopup items={availableSorting} />
+        <SortPopup activeSortType={sortBy} items={availableSorting} onClickSortType={onSelectSortType} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">

@@ -1,29 +1,29 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 
-  // при вызове MEMO в Categories, ререндер не производится
-  // т.к делает лишь поверхностное сравнение (Н: сравнивает ссылку, но не сравнивает пропсы) 
-const Categories = React.memo(function Categories({ items, showMeCategory }) {
-  const [activeItem, setActiveItem] = React.useState(null);
-
-  const onSelectItem = (index) => {
-    setActiveItem(index);
-    showMeCategory(index);
-  };
+// при вызове MEMO в Categories, ререндер не производится
+// т.к делает лишь поверхностное сравнение (Н: сравнивает ссылку, но не сравнивает пропсы)
+const Categories = React.memo(function Categories({
+  activeCategoryIndex,
+  items,
+  showMeCategory,
+}) {
+  // const [activeItem, setActiveItem] = React.useState(null);
 
   return (
     <div className="categories">
       <ul>
         <li
-          className={activeItem === null ? "active" : ""}
-          onClick={() => onSelectItem(null)}
+          className={activeCategoryIndex === null ? "active" : ""}
+          onClick={() => showMeCategory(null)}
         >
           Все
         </li>
         {items &&
           items.map((categoryName, index) => (
             <li
-              className={activeItem === index ? "active" : ""}
-              onClick={() => onSelectItem(index)}
+              className={activeCategoryIndex === index ? "active" : ""}
+              onClick={() => showMeCategory(index)}
               key={`${categoryName}_${index}`}
             >
               {categoryName}
@@ -33,6 +33,14 @@ const Categories = React.memo(function Categories({ items, showMeCategory }) {
     </div>
   );
 });
+
+Categories.propTypes = {
+  activeCategoryIndex: PropTypes.oneOf([PropTypes.number, null]),
+  items: PropTypes.arrayOf(PropTypes.string).isRequired,
+  showMeCategory: PropTypes.func.isRequired,
+};
+
+Categories.defaultProps = { activeCategoryIndex: null, items: [] };
 
 export default Categories;
 
